@@ -1,6 +1,6 @@
 package ru.maximenko.data_service;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,9 +29,7 @@ public class StudentProducerController {
     public ResponseEntity<String> sendStudent(@RequestBody StudentMessage request) {
         // Добавим timestamp на стороне продьюсера
         request.setCreatedAt(Instant.now());
-
         rabbitTemplate.convertAndSend(exchangeName, routingKey, request);
-
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body("Message sent to RabbitMQ");
     }
